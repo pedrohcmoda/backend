@@ -6,6 +6,7 @@
  */
 
 // Composables
+import Index from '@/pages/Index.vue'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 
 const router = createRouter({
