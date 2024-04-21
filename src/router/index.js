@@ -6,11 +6,25 @@
  */
 
 // Composables
-import Index from '@/pages/Index.vue'
 import { createRouter, createWebHistory } from 'vue-router/auto'
+import Home from '../pages/Index.vue'
+import Login from '../pages/Login.vue'
+import NotFound from '../pages/NotFound.vue'
+import Profile from '../pages/Profile.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory("/"),
 })
+
+
+
+router.addRoute({ path: '/', component: Home })
+router.addRoute({ path: '/Login', component: Login })
+router.addRoute({ path: '/Profile', component: Profile })
+router.addRoute({ path: '/Index', redirect: '/' })
+router.addRoute({ path: '/', component: Home })
+router.addRoute({path: '/:pathMatch(.*)', name: 'bad-not-found', component: NotFound})
+
+
 
 export default router

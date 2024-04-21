@@ -3,31 +3,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('posts', {
+    await queryInterface.createTable('comments', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      title: {
-        type: Sequelize.STRING,
+      post_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'posts',
+          key: 'id',
+        },
         allowNull: false,
       },
-      description: {
+      text: {
         type: Sequelize.TEXT,
-        allowNull: false,
-      },
-      ingredients: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      picture: {
-        type: Sequelize.BLOB('medium'),
-        allowNull: true,
-      },
-      price: {
-        type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
       users_id: {
@@ -38,19 +30,20 @@ module.exports = {
         },
         allowNull: false,
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
     });
   },
+
   async down(queryInterface) {
-    await queryInterface.dropTable('posts');
+    await queryInterface.dropTable('comments');
   },
 };
