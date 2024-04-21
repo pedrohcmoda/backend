@@ -1,8 +1,5 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <HomeOne />
+    <AppBar />
+    <UserPost />
 </template>
-
-<script setup>
-  //
-</script>

@@ -1,18 +1,17 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <div>
   
       <v-card class="mx-auto pa-12 pb-8" elevation="8" max-width="448" rounded="lg" id="primeiroBloco">
-        <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+        <div class="text-subtitle-1 text-medium-emphasis">Email</div>
   
         <v-text-field density="compact" placeholder="Email address" prepend-inner-icon="mdi-email-outline"
           variant="outlined"></v-text-field>
   
         <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
-          Password
+          Senha
   
           <a class="text-caption text-decoration-none text-blue" href="#" rel="noopener noreferrer" target="_blank">
-            Forgot login password?</a>
+            Esqueci a senha</a>
         </div>
   
         <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'" :type="visible ? 'text' : 'password'"

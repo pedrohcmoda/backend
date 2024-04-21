@@ -1,5 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <AppBar />
-  <UserLogin />
+  <PostGet />
+  <AppFooter />
 </template>
+
+<script setup>
+  //
+</script>

@@ -1,5 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <AppBar />
-  <UserLogin />
+      teste
 </template>
+
+<script>
+</script>
