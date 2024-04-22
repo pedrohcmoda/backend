@@ -1,17 +1,31 @@
 /* eslint-disable no-unused-vars */
 const Post = require('../models/Post.js');
-const User = require('../models/User.js');
 const Like = require('../models/Like.js');
 const Comment = require('../models/Comment.js');
-
+const Sequelize = require('sequelize');
+const fs = require('fs');
 
 module.exports = {
+
   async store(req, res) {
+    console.log(req.file);
+    console.log(req.file.filename); // Verifique o nome do arquivo
+  
     try {
-      const postar = await Post.create(req.body);
-      res.status(201).json({ message: 'Post created successfully', data: postar });
+      const imageData = fs.readFileSync(`./uploads/${req.file.filename}`, { encoding: 'base64' });
+      const postData = {
+        title: req.body.title,
+        description: req.body.description,
+        ingredients: req.body.ingredients,
+        price: req.body.price,
+        picture: imageData, // Armazene a imagem em base64
+        users_id: req.body.users_id,
+      };
+  
+      const createdPost = await Post.create(postData);
+      res.status(201).json({ message: 'Post created successfully!', data: createdPost });
     } catch (error) {
-      console.log(error.message)
+      console.error(error.message);
       res.status(500).json({ message: 'Error creating post', error: error.message });
     }
   },
@@ -19,8 +33,34 @@ module.exports = {
   async index(req, res) {
     try {
       const posts = await Post.findAll({
-        include:   Comment
-    });
+        include: [
+          {
+            model: Comment,
+            as: 'comments'
+          },
+          {
+            model: Like,
+            as: 'likes',
+            attributes: []
+          },
+        ],
+        attributes: {
+          include: [
+            [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'likeCount'],
+            [Sequelize.col('comments.id'), 'commentId']
+          ]
+        },
+        group: ['Post.id', 'comments.id']
+      });
+      try{
+        for (const post of posts) {
+          post.picture = post.picture.toString('base64'); 
+          post.picture = atob(post.picture);
+          post.picture = `data:image/png;base64,${post.picture}`;
+        }
+      }catch (error) {
+        console.error(error.message);
+      }
       res.status(200).json({ message: 'Posts retrieved successfully', data: posts });
     } catch (error) {
       res.status(500).json({ message: 'Error retrieving posts', error: error.message });
@@ -29,7 +69,12 @@ module.exports = {
 
   async indexOne(req, res) {
     try {
-      const posts = await Post.findByPk(req.params, {include: Comment});
+      const posts = await Post.findByPk(req.params.post_id, {include: {
+        model: Comment,
+        as: 'comments'
+      }});
+      posts.picture = posts.picture.toString('base64');
+      posts.picture = atob(posts.picture);
       res.status(200).json({ message: 'Posts retrieved successfully', data: posts });
     } catch (error) {
       res.status(500).json({ message: 'Error retrieving posts', error: error.message });
