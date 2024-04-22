@@ -8,12 +8,12 @@ class Like extends Model {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
-    }, { sequelize });
+    }, { sequelize , timestamps: false } );
   }
 
   static associate(models) {
-    Like.belongsTo(models.User, { foreignKey: 'users_id' });
-    Like.belongsTo(models.Post, { foreignKey: 'post_id' });
+    Like.belongsTo(models.User, { foreignKey: 'users_id', onDelete: 'CASCADE'});
+    Like.belongsTo(models.Post, { foreignKey: 'post_id', onDelete: 'CASCADE' });
   }
 }
 

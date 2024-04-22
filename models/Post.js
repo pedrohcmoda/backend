@@ -19,10 +19,12 @@ class Post extends Model {
         type: DataTypes.BLOB('medium'),
         allowNull: true,
       },
-      
       price: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
+      },
+      users_id: {
+        type: DataTypes.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -34,12 +36,27 @@ class Post extends Model {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
-    }, { sequelize });
+    }, { sequelize});
   }
 
   static associate(models) {
-    Post.belongsTo(models.User, { foreignKey: 'users_id' });
+    Post.belongsTo(models.User, { 
+      foreignKey: 'users_id',
+      as: 'users',
+    });
+    Post.hasMany(models.Comment, {
+      foreignKey: 'post_id',
+      as: 'comments',
+    });
+    Post.hasMany(models.Like, {
+      foreignKey: 'post_id',
+      as: 'likes',
+    });
   }
+
 }
+
+
+
 
 module.exports = Post;

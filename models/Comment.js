@@ -7,12 +7,22 @@ class Comment extends Model {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-    }, { sequelize });
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+    }, { sequelize , timestamps: true});
   }
 
   static associate(models) {
-    Comment.belongsTo(models.Post, { foreignKey: 'post_id' });
-    Comment.belongsTo(models.User, { foreignKey: 'users_id' });
+    Comment.belongsTo(models.Post, { foreignKey: 'post_id', onDelete: 'CASCADE'});
+    Comment.belongsTo(models.User, { foreignKey: 'users_id', onDelete: 'CASCADE' });
   }
 }
 

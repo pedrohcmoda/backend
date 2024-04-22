@@ -17,5 +17,15 @@ class User extends Model {
     }
     
 }
+User.associate = function(models) {
 
+    User.hasMany(models.Post, {
+
+    foreignKey: 'users_id',
+
+    as: 'posts',
+
+    });
+
+};
 module.exports = User;
