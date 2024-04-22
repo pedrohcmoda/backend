@@ -1,10 +1,14 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <AppBar />
-  <PostGet />
-  <AppFooter />
+  <div>
+    <AppBar />
+    
+    <postPost />
+    
+    <PostGet />
+    <AppFooter />
+  </div>
 </template>
 
 <script setup>
-  //
 </script>

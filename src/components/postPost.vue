@@ -1,105 +1,91 @@
 <template>
-  <div v-if="showPostarComponent" class="overlay">
-    <v-card height="50vh" width="70vw">
-      <v-card-text>
-        <v-img
-          :src="imagePreview"
-          alt="Selected Image"
-          lazy-src="https://www.sbrv.org/wp-content/uploads/2019/11/preview.png"
-          height="30vh"
-        ></v-img>
-        <v-text-field
-          v-model="title"
-          label="Title"
-          outlined
-          full-width
-        ></v-text-field>
-        <v-textarea
-          v-model="description"
-          label="Description"
-          outlined
-          full-width
-        ></v-textarea>
-        <v-text-field
-          v-model="ingredients"
-          label="Ingredients (comma separated)"
-          outlined
-          full-width
-        ></v-text-field>
-        <v-text-field
-          v-model="price"
-          label="Price"
-          type="number"
-          outlined
-          full-width
-        ></v-text-field>
-        <v-file-input
-          v-model="image"
-          accept="image/png, image/jpeg, image/bmp"
-          placeholder="Pick an image"
-          prepend-icon="mdi-camera"
-          @change="selectImage"
-          @click:clear="clearImagePreview()"
-          label="Image"
-        ></v-file-input>
-        <v-btn @click="submitPost">Submit Post</v-btn>
-      </v-card-text>
-    </v-card>
+  <div class="create-post-container">
+    <h2>Criar Novo Post</h2>
+
+    <v-form>
+      <v-text-field
+        label="Título"
+        required
+        v-model="title"
+      ></v-text-field>
+
+      <v-textarea
+        label="Descrição"
+        required
+        rows="5"
+        v-model="description"
+      ></v-textarea>
+
+      <v-text-field
+        label="Ingredientes"
+        required
+        v-model="ingredients"
+      ></v-text-field>
+
+      <input type="file" @change="handleFileChange" />
+
+      <v-text-field
+        label="Preço"
+        type="number"
+        required
+        v-model="price"
+      ></v-text-field>
+
+      <v-btn color="primary" @click="createPost">Criar Post</v-btn>
+    </v-form>
   </div>
 </template>
 
-
 <script>
-import { ref } from 'vue';
+import axios from 'axios';
 
 export default {
-  name: 'VFCImageUploadPreview',
   data() {
     return {
-      image: ref(null),
-      imagePreview: '',
       title: '',
       description: '',
       ingredients: '',
+      picture: null,
       price: 0,
-      showPostarComponent: false,
+      users_id: localStorage.getItem('user'),
     };
   },
   methods: {
-    async selectImage(e) {
-      const file = e.target.files[0];
-      if (!file) return;
+    async createPost() {
+      const formData = new FormData();
+      formData.append('title', this.title);
+      formData.append('description', this.description);
+      formData.append('ingredients', this.ingredients);
+      formData.append('picture', this.picture);
+      formData.append('price', this.price);
+      formData.append('users_id', this.users_id);
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        this.imagePreview = event.target.result;
-      };
-      reader.readAsDataURL(file);
-
-      this.image.value = file;
+      try {
+        const token = localStorage.getItem('token');
+        await axios.post('http://localhost:3334/posts', formData, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('Post criado com sucesso');
+      } catch (error) {
+        console.error('Erro ao criar post:', error);
+      }
     },
-    async clearImagePreview() {
-      this.imagePreview = '';
-      this.image.value = null;
-    },
-    toBlob() {
-      if (!this.image.value) return null
-    },
-  }
-}
+    handleFileChange(event) {
+      this.picture = event.target.files[0];
+    }
+  },
+};
 </script>
 
-
 <style scoped>
-  .overlay {
-    position: fixed; /* Ensures overlay stays on top */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Darkens the background */
-    display: flex;
-    justify-content: center; /* Centers the card horizontally */
-    align-items: center; /* Centers the card vertically */
-  }
+.create-post-container {
+  margin: 20px;
+}
+
+.v-form {
+  width: 500px;
+}
 </style>
