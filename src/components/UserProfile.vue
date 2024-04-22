@@ -52,10 +52,10 @@
 
               if (!userId) {
                 console.error("Missing user ID in localStorage");
-                return; // Handle the missing user ID case
+                return;
               }
 
-              const updateData = {}; // Create an empty object to hold update data
+              const updateData = {};
 
               if (this.name) updateData.name = this.name;
               if (this.email) updateData.email = this.email;
@@ -68,10 +68,8 @@
                   { headers: { 'Authorization': 'Bearer ' + this.token } }
                 );
                 console.log("User data patched successfully:", response.data);
-                // Handle successful patch response (e.g., update UI)
               } catch (error) {
                 console.error("Error patching user data:", error);
-                // Handle the error (e.g., display an error message to the user)
               }
             },
 

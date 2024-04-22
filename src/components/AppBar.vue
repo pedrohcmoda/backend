@@ -38,7 +38,6 @@ export default {
     },
     postar() {
       if(localStorage.getItem('token')) {
-        // logica para aparecer o popup de postagem
       } else {
         this.$router.push('/Login');
       }

@@ -9,7 +9,7 @@ module.exports = {
 
   async store(req, res) {
     console.log(req.file);
-    console.log(req.file.filename); // Verifique o nome do arquivo
+    console.log(req.file.filename);
   
     try {
       const imageData = fs.readFileSync(`./uploads/${req.file.filename}`, { encoding: 'base64' });
@@ -18,7 +18,7 @@ module.exports = {
         description: req.body.description,
         ingredients: req.body.ingredients,
         price: req.body.price,
-        picture: imageData, // Armazene a imagem em base64
+        picture: imageData,
         users_id: req.body.users_id,
       };
   

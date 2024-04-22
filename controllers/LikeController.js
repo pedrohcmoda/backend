@@ -2,7 +2,6 @@ const Like = require('../models/Like.js');
 
 module.exports = {
 
-  // Like a post (consider authorization)
   async likePost(req, res) {
     const { post_id } = req.params;
     const users_id = req.body.user_id;
@@ -22,7 +21,6 @@ module.exports = {
     }
   },
 
-  // Get all likes for a post (optional)
   async getPostLikes(req, res) {
     const { post_id } = req.params;
 

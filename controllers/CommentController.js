@@ -1,10 +1,9 @@
 const Comment = require('../models/Comment.js');
 module.exports = {
 
-  // Create a comment on a post (consider authorization)
   async createComment(req, res) {
     const { post_id } = req.params;
-    const users_id = req.body.users_id; // Assuming user authentication
+    const users_id = req.body.users_id;
     const text = req.body.text
     
     if (!text) {
@@ -20,7 +19,6 @@ module.exports = {
     }
   },
 
-  // Get all comments for a post (optional)
   async getPostComments(req, res) {
     const { post_id } = req.params;
 
@@ -33,7 +31,6 @@ module.exports = {
     }
   },
 
-  // Delete a comment (consider authorization)
   async deleteComment(req, res) {
     const { comment_id } = req.params;
 
